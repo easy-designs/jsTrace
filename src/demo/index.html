@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>jsTrace Demo Page</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="Aaron Gustafson (aaron at easy-designs dot net)" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="(CC) 2005 Easy Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <script type="text/javascript" src="../working/jsTrace.js"></script>
+  <script type="text/javascript" src="../working/dom-drag.js"></script>
+  <script type="text/javascript">
+    // <![CDATA[
+    function dummyFunction(){
+      var div  = document.createElement( 'div' );
+      var container = document.getElementById( 'container' );
+      div.style.border     = '1px solid #000';
+      div.style.background = '#fff';
+      div.style.width      = '100px';
+      div.style.height     = '100px';
+      div.style.position   = 'absolute';
+      for( var i=0; i<10; i++ ){
+        var this_div = div.cloneNode( true );
+        this_div.appendChild( document.createTextNode( 'This is div #' + (i+1) ) );
+        this_div.style.top    = ( 20 * i ) + 'px';
+        this_div.style.left   = ( 20 * i ) + 'px';
+        this_div.style.zIndex = i + 1;
+        this_div.onclick = function(){
+                             trace( 'You clicked on div #' + this.style.zIndex );
+                           }
+        container.appendChild( this_div );
+      }
+    }
+    window.onload = function() {
+      trace( 'this was written in the first part of the onload and was stored in the buffer' );
+      dummyFunction();
+    }
+    function trace( msg ){
+      if( typeof( jsTrace ) != 'undefined' ){
+        jsTrace.send( msg );
+      }
+    }
+    // ]]>
+  </script>
+</head>
+<body>
+  <h1>This is a test of jsTrace</h1>
+  <p>What we are trying to do is replcate the functionality of Flash&#8217;s trace window in JavaScript to get rid of those nasty alert boxes. Once they flow in, click on any of the <code>div</code>s eblow to see their <code>onclick</code> trigger a trace.</p>
+  <p>To test the new memory feature, try going to <a href="http://www.easy-reader.net">another page</a> and then come back (requires cookies).</p>
+  <div id="container" style="position: relative; width: 500px; margin: 2em auto;">
+  </div>
+</body>
+</html>
